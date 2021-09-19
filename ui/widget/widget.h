@@ -61,6 +61,7 @@ typedef enum widget_type {
   WIDGET_TYPE_QUERY_SAVE,	/* Query (save/don't save/cancel) */
   WIDGET_TYPE_DISKOPTIONS,	/* Disk options widget */
   WIDGET_TYPE_BINARY,		/* Binary load/save */
+  WIDGET_TYPE_GDBSERVER,	/* GDBServer */
 } widget_type;
 
 /* Activate a widget */
@@ -140,6 +141,12 @@ static inline int widget_do_fileselector_save( widget_filesel_data *data )
 static inline int widget_do_general( void )
 {
   return widget_do( WIDGET_TYPE_GENERAL, NULL );
+}
+
+/* General options */
+static inline int widget_do_gdbserver( void )
+{
+  return widget_do( WIDGET_TYPE_GDBSERVER, NULL );
 }
 
 /* Keyboard picture */

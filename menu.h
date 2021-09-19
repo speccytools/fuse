@@ -143,6 +143,7 @@ MENU_CALLBACK( menu_options_peripherals_disk );
 MENU_CALLBACK( menu_options_rzx );
 MENU_CALLBACK( menu_options_movie );
 MENU_CALLBACK( menu_options_diskoptions );
+MENU_CALLBACK( menu_options_gdbserver );
 MENU_DETAIL( menu_plus3a_detail );
 MENU_DETAIL( menu_plus3b_detail );
 MENU_DETAIL( menu_beta128a_detail );

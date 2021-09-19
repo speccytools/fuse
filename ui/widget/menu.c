@@ -472,6 +472,12 @@ menu_options_general( int action )
 }
 
 void
+menu_options_gdbserver( int action )
+{
+    widget_do_gdbserver();
+}
+
+void
 menu_options_media( int action )
 {
   widget_do_media();

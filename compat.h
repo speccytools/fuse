@@ -185,6 +185,7 @@ typedef SOCKET compat_socket_t;
 typedef SOCKADDR compat_sockaddr;
 #else  /* #ifndef WIN32 */
 #include <sys/socket.h>
+#include <netinet/tcp.h>
 #include <netdb.h>
 #include <errno.h>
 #define COMPAT_ENOTCONN ENOTCONN

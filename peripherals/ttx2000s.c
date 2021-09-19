@@ -22,6 +22,7 @@
 #include "libspectrum.h"
 
 #include "compat.h"
+#include "utils.h"
 #include "debugger/debugger.h"
 #include "infrastructure/startup_manager.h"
 #include "machine.h"
@@ -138,7 +139,7 @@ ttx2000s_init( void *context )
   periph_register_paging_events( event_type_string, &page_event,
                                  &unpage_event );
 
-  compat_socket_networking_init(); /* enable networking */
+  utils_networking_init(); /* enable networking */
 
   field_event = event_register( ttx2000s_field_event, "TTX2000S field event" );
 

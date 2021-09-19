@@ -82,6 +82,7 @@ Options/_Sound..., Item
 Options/_Peripherals, Branch
 Options/Peripherals/_General..., Item
 Options/Peripherals/_Disk..., Item
+Options/_GDBServer..., Item
 
 Options/_RZX..., Item
 Options/_Movie..., Item

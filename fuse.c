@@ -54,6 +54,7 @@
 #endif
 
 #include "debugger/debugger.h"
+#include "debugger/gdbserver.h"
 #include "display.h"
 #include "event.h"
 #include "fuse.h"
@@ -401,8 +402,8 @@ static int fuse_init(int argc, char **argv)
   if( parse_nonoption_args( argc, argv, first_arg, &start_files ) ) return 1;
   if( do_start_files( &start_files ) ) return 1;
 
-  /* Must do this after all subsytems are initialised */
-  debugger_command_evaluate( settings_current.debugger_command );
+
+  gdbserver_init();
 
   if( ui_mouse_present ) ui_mouse_grabbed = ui_mouse_grab( 1 );
 
@@ -964,6 +965,7 @@ static int fuse_end(void)
   svg_capture_end();
 
   libspectrum_end();
+  gdbserver_stop();
 
   return 0;
 }

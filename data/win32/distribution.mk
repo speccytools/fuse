@@ -57,6 +57,9 @@ install-win32-strip: install-win32
 dist-win32-dir:
 	$(MAKE) DESTDIR="$(top_win32dir)" install-win32-strip
 
+dist-win32-dir-debug:
+	$(MAKE) DESTDIR="$(top_win32dir)" install-win32
+
 dist-win32-zip: dist-win32-dir
 	rm -f -- $(top_builddir)/$(package_win32).zip
 	rm -f -- $(top_builddir)/$(package_win32).zip.sha1
