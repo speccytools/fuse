@@ -159,7 +159,17 @@ z80_do_opcodes( void )
     END_CHECK
 
     /* Check if the debugger should become active at this point */
-    CHECK( debugger, debugger_mode != DEBUGGER_MODE_INACTIVE )
+    CHECK( debugger, (debugger_mode != DEBUGGER_MODE_INACTIVE) || is_debugger_enabled() )
+    
+    {
+      uint16_t new_clock_l = CLOCKL + debugger_track_tstates();
+      
+      if (new_clock_l < CLOCKL) {
+        CLOCKH++;
+      }
+      
+      CLOCKL = new_clock_l;
+    }
 
     if( debugger_check( DEBUGGER_BREAKPOINT_TYPE_EXECUTE, PC ) )
       debugger_trap();
