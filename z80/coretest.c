@@ -76,6 +76,9 @@ static int read_test( FILE *f, libspectrum_dword *end_tstates );
 static void dump_z80_state( void );
 static void dump_memory_state( void );
 
+uint32_t debugger_track_tstates() { return 0; }
+int is_debugger_enabled() { return 0; }
+
 int
 main( int argc, char **argv )
 {
