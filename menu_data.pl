@@ -79,6 +79,10 @@ while(<>) {
     chomp;
 
     my( $path, $type, $hotkey, $function, $detail, $action ) = split /\s*,\s*/;
+    
+    # Skip if path is empty (shouldn't happen, but be safe)
+    next unless defined $path && length $path > 0;
+    next unless defined $type;
 
     my @segments = split '/', $path;
 
@@ -88,22 +92,50 @@ while(<>) {
     $entry->{type} = $type;
     $entry->{hotkey} = $hotkey if $hotkey;
 
-    my $walk = $menus{submenu};
-    $walk = get_branch( $walk, $_ ) foreach @segments;
-
+    # Set submenu for branches BEFORE walking, so they can be found
     if( $type eq 'Branch' ) {
-
 	$entry->{submenu} = [ ];
-
     } elsif( $type eq 'Item' ) {
-
 	$entry->{function} = $function if $function;
 	$entry->{action} = $action if $action;
-
     }
 
     $entry->{detail} = $detail if $detail;
 
+    my $walk = $menus{submenu};
+    
+    # If this is a branch at the root level (no segments), add it directly and continue
+    if( @segments == 0 && $type eq 'Branch' ) {
+	push @$walk, $entry;
+	# Debug: verify the branch was added
+	# warn "Added root branch: $entry->{name} (submenu: " . (defined $entry->{submenu} ? 'yes' : 'no') . ")\n";
+	next;
+    }
+    
+    foreach my $segment (@segments) {
+	# Strip underscores from segment for comparison (same as get_branch does)
+	my $segment_clean = $segment;
+	$segment_clean =~ s/_//;
+	
+	my $branch = get_branch( $walk, $segment_clean );
+	if( !defined $branch ) {
+	    # Branch doesn't exist - create it on the fly
+	    # This handles cases where branches are referenced before they're defined
+	    my $new_branch = {
+		name => $segment,
+		type => 'Branch',
+		submenu => [ ]
+	    };
+	    push @$walk, $new_branch;
+	    $walk = $new_branch->{submenu};
+	} else {
+	    $walk = $branch;
+	}
+    }
+
+    if( !defined $walk ) {
+	die "$0: walk is undefined for path '$path'\n";
+    }
     push @$walk, $entry;
 
 }
@@ -131,6 +163,8 @@ sub get_branch ($$) {
 
 	return $entry->{submenu} if $name eq $branch;
     }
+    
+    return undef;
 }
 
 sub cname ($) {
@@ -417,18 +451,24 @@ sub _dump_win32 ($$$$) {
 	    }
 	}
 
-	if( $item->{submenu} ) {
+	# Check if this is a Branch type (which has submenu) or Item type
+	if( $item->{type} eq 'Branch' || $item->{submenu} ) {
+	    # Branch types: generate POPUP in RC mode and recurse, but don't generate function calls in C mode
 	    if( $mode eq 'rc' ) {
 	        print "${spaces}POPUP \"$name\"\n";
 		print "${spaces}\{\n";
 	    }
-	    _dump_win32( $mode, $item, "${path}_$cname", $spaces . "  " );
+	    if( $item->{submenu} ) {
+		_dump_win32( $mode, $item, "${path}_$cname", $spaces . "  " );
+	    }
 	    if( $mode eq 'rc' ) {
 	        print "${spaces}}\n";
 	    }
+	    # Branches don't generate function calls in C mode - they're just containers
 	} else {
+	    # Item types: generate function calls in C mode
 	    if( $mode eq 'c' ) {
-	        my $function = $item->{function} || "${path}_$cname";
+		my $function = $item->{function} || "${path}_$cname";
 		print "    case $idmname:\n";
 		print "      $function( " . ( $item->{action} || 0 ) . " ); "
 		      . "return 0;\n";

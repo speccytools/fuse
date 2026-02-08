@@ -1,0 +1,3 @@
+[submodule "3rdparty/libspectrum"]
+	path = 3rdparty/libspectrum
+	url = ../libspectrum

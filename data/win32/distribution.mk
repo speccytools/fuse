@@ -56,6 +56,41 @@ install-win32-strip: install-win32
 
 dist-win32-dir:
 	$(MAKE) DESTDIR="$(top_win32dir)" install-win32-strip
+#	Copy DLLs from 3rdparty/dist/bin (built libraries)
+	@if test -d "$(top_srcdir)/3rdparty/dist/bin"; then \
+	  echo "Copying DLLs from 3rdparty/dist/bin..."; \
+	  for dll in "$(top_srcdir)/3rdparty/dist/bin"/*.dll; do \
+	    if test -f "$$dll"; then \
+	      cp "$$dll" "$(top_win32dir)/"; \
+	      echo "  Copied $$(basename $$dll)"; \
+	    fi; \
+	  done; \
+	fi
+#	Copy required MinGW runtime DLLs
+	@MINGW_BIN=""; \
+	if test -n "$$MSYSTEM"; then \
+	  if test "$$MSYSTEM" = "MINGW64"; then \
+	    MINGW_BIN="/mingw64/bin"; \
+	  elif test "$$MSYSTEM" = "MINGW32"; then \
+	    MINGW_BIN="/mingw32/bin"; \
+	  fi; \
+	fi; \
+	if test -z "$$MINGW_BIN"; then \
+	  if test -d "/mingw64/bin"; then \
+	    MINGW_BIN="/mingw64/bin"; \
+	  elif test -d "/mingw32/bin"; then \
+	    MINGW_BIN="/mingw32/bin"; \
+	  fi; \
+	fi; \
+	if test -n "$$MINGW_BIN"; then \
+	  echo "Copying MinGW runtime DLLs from $$MINGW_BIN..."; \
+	  for dll in libwinpthread-1.dll libgcc_s_dw2-1.dll libstdc++-6.dll; do \
+	    if test -f "$$MINGW_BIN/$$dll"; then \
+	      cp "$$MINGW_BIN/$$dll" "$(top_win32dir)/"; \
+	      echo "  Copied $$dll"; \
+	    fi; \
+	  done; \
+	fi
 
 dist-win32-dir-debug:
 	$(MAKE) DESTDIR="$(top_win32dir)" install-win32
