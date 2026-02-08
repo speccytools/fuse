@@ -25,7 +25,7 @@
 !define DISPLAY_NAME "the Free Unix Spectrum Emulator (Fuse) ${FUSE_VERSION}"
 !define SETUP_FILENAME "@PACKAGE@-${FUSE_VERSION}-win32-setup"
 !define SETUP_FILE "${SETUP_FILENAME}.exe"
-!define HKLM_REG_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\Fuse"
+!define HKLM_REG_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\FuseX"
 !define PROG_ID "Fuse.Files.1"
 
 ;Include Modern UI
@@ -40,7 +40,7 @@ Name "${DISPLAY_NAME}"
 outFile "${SETUP_FILE}"
 Caption "${DISPLAY_NAME}"
  
-installDir "$PROGRAMFILES\Fuse"
+installDir "$PROGRAMFILES\FuseX"
 
 ; [Additional Installer Settings ]
 XPStyle on
@@ -258,6 +258,9 @@ section "!Fuse Core Files (required)" SecCore
     File "libspectrum-9.dll"
     File "libwinpthread-1.dll"
     File "libstdc++-6.dll"
+    File "libmbedtls.dll"
+    File "libmbedx509.dll"
+    File "libmbedcrypto.dll"
     File /nonfatal "libaudiofile-1.dll"
     File /nonfatal "libxml2-2.dll"
     File /nonfatal "libgcc_s_dw2-1.dll"
@@ -353,12 +356,12 @@ section "uninstall"
 	
     ; Delete the links
     DetailPrint "Deleting Shortcuts..."
-    Delete "$SMPROGRAMS\Fuse\Fuse.lnk"
-    Delete "$SMPROGRAMS\Fuse\Manual.lnk"
-    Delete "$SMPROGRAMS\Fuse\Readme.lnk"
-    Delete "$SMPROGRAMS\Fuse\Uninstall.lnk"
-    RMDir  "$SMPROGRAMS\Fuse"
-    Delete "$DESKTOP\Fuse.lnk"
+    Delete "$SMPROGRAMS\FuseX\FuseX.lnk"
+    Delete "$SMPROGRAMS\FuseX\Manual.lnk"
+    Delete "$SMPROGRAMS\FuseX\Readme.lnk"
+    Delete "$SMPROGRAMS\FuseX\Uninstall.lnk"
+    RMDir  "$SMPROGRAMS\FuseX"
+    Delete "$DESKTOP\FuseX.lnk"
 
     ; Installation files
     DetailPrint "Deleting Files..."
@@ -380,7 +383,7 @@ section "uninstall"
     ; Delete the uninstaller and remove the uninstall keys for Windows
     DetailPrint "Deleting Uninstaller..."
     Delete "$INSTDIR\uninstall.exe"
-    DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Fuse"
+    DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\FuseX"
 
 sectionEnd
 

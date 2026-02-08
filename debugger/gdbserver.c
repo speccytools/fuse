@@ -577,7 +577,7 @@ static void* network_thread(void* arg)
             pthread_mutex_unlock(&network_mutex);
         }
 
-        socklen_t socklen;
+        socklen_t socklen = sizeof(struct sockaddr_in);
         struct sockaddr_in connected_addr;
         int sock = accept(gdbserver_socket, (struct sockaddr*)&connected_addr, &socklen);
         if (sock < 0)
@@ -611,44 +611,9 @@ static void* network_thread(void* arg)
         }
         pthread_mutex_unlock(&trap_process_mutex);
 
-        // Process client socket with select() to avoid blocking
+    
         int ret;
-        while (gdbserver_client_socket >= 0)
-        {
-            struct timeval timeout;
-            timeout.tv_sec = 0;
-            timeout.tv_usec = 100000;  // 100ms timeout
-            
-            fd_set read_set;
-            FD_ZERO(&read_set);
-            FD_SET(gdbserver_client_socket, &read_set);
-            
-            int select_result = select(gdbserver_client_socket + 1, &read_set, NULL, NULL, &timeout);
-            if (select_result > 0 && FD_ISSET(gdbserver_client_socket, &read_set))
-            {
-                ret = process_network(gdbserver_client_socket);
-                if (ret < 0)
-                {
-                    break;  // Error or disconnect
-                }
-            }
-            else if (select_result < 0)
-            {
-#ifdef WIN32
-                int err = WSAGetLastError();
-                if (err != WSAEINTR)
-                {
-                    break;  // Real error
-                }
-#else
-                if (errno != EINTR)
-                {
-                    break;  // Real error
-                }
-#endif
-            }
-            // Timeout or no data - continue loop to check socket status
-        }
+        while ((ret = process_network(gdbserver_client_socket)) == 0) ;
         printf("Socket closed: %d\n", gdbserver_client_socket);
         
         debugger_breakpoint_remove_all();

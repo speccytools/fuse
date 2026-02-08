@@ -11,9 +11,13 @@
 #include <fcntl.h>  /* For O_* constants */
 #include <direct.h>
 #define mkdir(path, mode) _mkdir(path)
+#ifndef O_BINARY
+#define O_BINARY 0  /* Fallback if not defined (Unix doesn't need it) */
+#endif
 #else
 #include <unistd.h>
 #include <fcntl.h>
+#define O_BINARY 0  /* Not needed on Unix */
 #endif
 #include <sys/stat.h>
 #include <dirent.h>
@@ -169,6 +173,11 @@ static int16_t fs_open(const struct xfs_engine_mount_t* engine, struct xfs_handl
         open_flags |= O_CREAT;
     if (flags & XFS_O_TRUNC)
         open_flags |= O_TRUNC;
+    
+#ifdef WIN32
+    // On Windows, open files in binary mode to prevent \n -> \r\n conversion
+    open_flags |= O_BINARY;
+#endif
     
     XFS_DEBUG("fs: open open_flags=0x%x (O_RDONLY=0x%x O_WRONLY=0x%x O_RDWR=0x%x O_CREAT=0x%x O_TRUNC=0x%x)\n",
               open_flags, O_RDONLY, O_WRONLY, O_RDWR, O_CREAT, O_TRUNC);
