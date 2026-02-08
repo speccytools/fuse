@@ -7,6 +7,9 @@
 
 #ifdef __APPLE__
 #include <stdlib.h> /* For arc4random_buf */
+#elif defined(WIN32)
+#include <windows.h>
+#include <wincrypt.h>
 #else
 #include <sys/random.h>
 #endif
@@ -83,6 +86,16 @@ tls_rng( void *ctx, unsigned char *buf, size_t len )
 #ifdef __APPLE__
   /* Use macOS arc4random_buf - no framework linking required */
   arc4random_buf( buf, len );
+#elif defined(WIN32)
+  /* Use Windows CryptGenRandom */
+  HCRYPTPROV hProv = 0;
+  if( !CryptAcquireContext( &hProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT ) )
+    return -1; /* RNG failure */
+  if( !CryptGenRandom( hProv, (DWORD)len, buf ) ) {
+    CryptReleaseContext( hProv, 0 );
+    return -1; /* RNG failure */
+  }
+  CryptReleaseContext( hProv, 0 );
 #else
   /* Use Linux getrandom() */
   ssize_t ret = getrandom( buf, len, 0 );

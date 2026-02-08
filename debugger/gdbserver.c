@@ -34,6 +34,18 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <semaphore.h>
+#ifdef WIN32
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#ifndef socklen_t
+typedef int socklen_t;
+#endif
+#else
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sched.h>
+#endif
 
 typedef uint8_t (*trapped_action_t)(const void* data, void* response);
 
@@ -599,9 +611,44 @@ static void* network_thread(void* arg)
         }
         pthread_mutex_unlock(&trap_process_mutex);
 
-    
+        // Process client socket with select() to avoid blocking
         int ret;
-        while ((ret = process_network(gdbserver_client_socket)) == 0) ;
+        while (gdbserver_client_socket >= 0)
+        {
+            struct timeval timeout;
+            timeout.tv_sec = 0;
+            timeout.tv_usec = 100000;  // 100ms timeout
+            
+            fd_set read_set;
+            FD_ZERO(&read_set);
+            FD_SET(gdbserver_client_socket, &read_set);
+            
+            int select_result = select(gdbserver_client_socket + 1, &read_set, NULL, NULL, &timeout);
+            if (select_result > 0 && FD_ISSET(gdbserver_client_socket, &read_set))
+            {
+                ret = process_network(gdbserver_client_socket);
+                if (ret < 0)
+                {
+                    break;  // Error or disconnect
+                }
+            }
+            else if (select_result < 0)
+            {
+#ifdef WIN32
+                int err = WSAGetLastError();
+                if (err != WSAEINTR)
+                {
+                    break;  // Real error
+                }
+#else
+                if (errno != EINTR)
+                {
+                    break;  // Real error
+                }
+#endif
+            }
+            // Timeout or no data - continue loop to check socket status
+        }
         printf("Socket closed: %d\n", gdbserver_client_socket);
         
         debugger_breakpoint_remove_all();
@@ -793,7 +840,13 @@ static uint8_t gdbserver_execute_on_main_thread(trapped_action_t call, const voi
     pthread_cond_signal(&trapped_cond);
     pthread_mutex_unlock(&trap_process_mutex);
     
+#ifdef __APPLE__
     pthread_yield_np();
+#elif defined(WIN32)
+    SwitchToThread();
+#else
+    sched_yield();
+#endif
 
     pthread_mutex_lock(&trap_process_mutex);
     // wait for the response

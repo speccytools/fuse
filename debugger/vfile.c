@@ -797,7 +797,7 @@ char* vfile_handle_v(const char* name, const char* args, uint32_t n)
             size_t subcmd_len = colon - subcmd_with_args;
             if (subcmd_len >= sizeof(subcmd_buf))
             {
-                return "E22";  // EINVAL - subcommand too long
+                return (char*)"E22";  // EINVAL - subcommand too long
             }
             memcpy(subcmd_buf, subcmd_with_args, subcmd_len);
             subcmd_buf[subcmd_len] = '\0';
@@ -847,5 +847,5 @@ char* vfile_handle_v(const char* name, const char* args, uint32_t n)
         }
     }
     
-    return "";  // Unknown command, return empty
+    return (char*)"";  // Unknown command, return empty
 }

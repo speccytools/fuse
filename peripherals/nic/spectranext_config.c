@@ -29,7 +29,7 @@ static void spectranext_config_process_command(void)
             // Return single access point "spectranext"
             spectranext_config.scan_status = WIFI_SCAN_SCANNING;
             spectranext_config.scan_access_point_count = 1;
-            strcpy(spectranext_config.access_points[0].name, "spectranext");
+            strcpy((char*)spectranext_config.access_points[0].name, "spectranext");
             spectranext_config.scan_status = WIFI_SCAN_COMPLETE;
             break;
         }

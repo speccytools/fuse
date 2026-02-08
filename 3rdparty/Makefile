@@ -19,7 +19,7 @@ GREEN := \033[0;32m
 YELLOW := \033[1;33m
 NC := \033[0m
 
-.PHONY: all clean distclean libspectrum audiofile libxml2 check-tools check-libspectrum extract-audiofile extract-libxml2 libspectrum-with-audiofile
+.PHONY: all clean distclean libspectrum audiofile libxml2 mbedtls check-tools check-libspectrum extract-audiofile extract-libxml2 libspectrum-with-audiofile
 
 all: check-tools check-libspectrum dist-dirs libspectrum
 	@if [ -d "audiofile-patched" ] || [ -f "audiofile-patched.zip" ]; then \
@@ -27,6 +27,9 @@ all: check-tools check-libspectrum dist-dirs libspectrum
 	fi
 	@if [ -d "libxml2-2.9.12" ] || [ -f "libxml2-2.9.12.tar.gz" ]; then \
 		$(MAKE) libxml2; \
+	fi
+	@if [ -d "mbedtls/src" ]; then \
+		$(MAKE) mbedtls; \
 	fi
 	@echo ""
 	@echo "$(GREEN)=== Library build complete! ===$(NC)"
@@ -40,6 +43,7 @@ all: check-tools check-libspectrum dist-dirs libspectrum
 	@echo "  ✓ libspectrum"
 	@if [ -d "audiofile-patched" ]; then echo "  ✓ audiofile"; fi
 	@if [ -d "libxml2-2.9.12" ]; then echo "  ✓ libxml2"; fi
+	@if [ -d "mbedtls/src" ]; then echo "  ✓ mbedtls"; fi
 	@echo ""
 	@echo "You can now run build-fuse.sh to build Fuse."
 
@@ -144,6 +148,34 @@ libxml2: extract-libxml2
 		$(MAKE) install-strip; \
 	fi
 
+# Build mbedtls (optional, required for TLS/HTTPS support)
+mbedtls:
+	@if [ -d "mbedtls/src" ]; then \
+		echo ""; \
+		echo "$(GREEN)Building mbedtls (optional, for TLS support)...$(NC)"; \
+		cd mbedtls/src && \
+		if [ -f library/Makefile ]; then \
+			$(MAKE) clean || true; \
+		fi && \
+		$(MAKE) WINDOWS=1 SHARED=1 no_test && \
+		mkdir -p "$(DIST_PREFIX)/include/mbedtls" && \
+		cp -rp include/mbedtls/* "$(DIST_PREFIX)/include/mbedtls/" && \
+		mkdir -p "$(DIST_PREFIX)/lib" && \
+		mkdir -p "$(DIST_PREFIX)/bin" && \
+		cd library && \
+		for lib in libmbedtls libmbedx509 libmbedcrypto; do \
+			if [ -f "$$lib.a" ]; then \
+				cp -f "$$lib.a" "$(DIST_PREFIX)/lib/" || true; \
+			fi && \
+			if [ -f "$$lib.dll.a" ]; then \
+				cp -f "$$lib.dll.a" "$(DIST_PREFIX)/lib/" || true; \
+			fi && \
+			if [ -f "$$lib.dll" ]; then \
+				cp -f "$$lib.dll" "$(DIST_PREFIX)/bin/" || true; \
+			fi; \
+		done; \
+	fi
+
 
 # Clean targets
 clean:
@@ -156,6 +188,9 @@ clean:
 	fi
 	@if [ -d "libxml2-2.9.12" ] && [ -f "libxml2-2.9.12/Makefile" ]; then \
 		cd libxml2-2.9.12 && $(MAKE) distclean || true; \
+	fi
+	@if [ -d "mbedtls/src" ] && [ -f "mbedtls/src/library/Makefile" ]; then \
+		cd mbedtls/src && $(MAKE) clean || true; \
 	fi
 
 distclean: clean

@@ -33,7 +33,9 @@ fusex_SOURCES += \
                 debugger/gdbserver_utils.c \
                 debugger/system_variable.c \
                 debugger/packets.c \
-                debugger/variable.c
+                debugger/variable.c \
+                debugger/vfile.c \
+                debugger/vfile_ext.c
 
 debugger/commandl.c: debugger/commandy.c
 debugger/commandy.h: debugger/commandy.c
@@ -42,7 +44,9 @@ noinst_HEADERS += \
                   debugger/breakpoint.h \
                   debugger/commandy.h \
                   debugger/debugger.h \
-                  debugger/debugger_internals.h
+                  debugger/debugger_internals.h \
+                  debugger/vfile.h \
+                  debugger/vfile_ext.h
 
 CLEANFILES += \
               debugger/commandl.c \

@@ -69,6 +69,10 @@ if USE_SDL
 fusex_LDADD += $(SDL_LIBS)
 endif
 
+if BUILD_SPECTRANET
+fusex_LDADD += -L$(top_srcdir)/3rdparty/dist/lib -lmbedtls -lmbedx509 -lmbedcrypto
+endif
+
 fusex_DEPENDENCIES =
 
 EXTRA_fusex_SOURCES =
@@ -94,6 +98,10 @@ AM_CPPFLAGS = \
 
 if USE_SDL
 AM_CPPFLAGS += $(SDL_CFLAGS)
+endif
+
+if BUILD_SPECTRANET
+AM_CPPFLAGS += -I$(srcdir)/3rdparty/mbedtls/src/include
 endif
 
 AM_CFLAGS = $(WARN_CFLAGS) $(PTHREAD_CFLAGS)

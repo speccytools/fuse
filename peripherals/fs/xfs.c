@@ -472,7 +472,7 @@ void xfs_handle_stat(struct xfs_registers_t* registers)
         uint8_t* strings = (uint8_t*)registers->workspace + 22;
         strings[0] = 0;
         strings[1] = 0;
-        XFS_DEBUG("xfs: stat success size=%lu mode=0x%04x\n", info.size, stat->mode);
+        XFS_DEBUG("xfs: stat success size=%u mode=0x%04x\n", info.size, stat->mode);
         registers->result = 0;
         registers->status = XFS_STATUS_COMPLETE;
     }

@@ -2,7 +2,12 @@
 
 #include "xfs.h"
 #include "xfs_engines.h"
+#include "config.h"
 #include "xfs_worker.h"
+#ifdef WIN32
+#include <direct.h>
+#define mkdir(path, mode) _mkdir(path)
+#endif
 
 #include <string.h>
 #include <stdlib.h>
@@ -43,12 +48,16 @@ void xfs_init()
     snprintf(xfs_base_path, sizeof(xfs_base_path), "%s/xfs", compat_get_config_path());
     
     // Create "xfs" directory in Application Support directory
+#ifdef WIN32
+    if (_mkdir(xfs_base_path) != 0 && errno != EEXIST)
+#else
     if (mkdir(xfs_base_path, 0755) != 0 && errno != EEXIST)
+#endif
     {
         ui_error( UI_ERROR_WARNING, "xfs: failed to create xfs directory: %s\n", strerror(errno) );
     }
     
-    XFS_DEBUG("xfs: initialized with base path: %s\n", xfs_base_path ? xfs_base_path : "(null)");
+    XFS_DEBUG("xfs: initialized with base path: %s\n", xfs_base_path[0] != '\0' ? xfs_base_path : "(null)");
 }
 
 void xfs_reset(void)
@@ -77,6 +86,6 @@ void xfs_write( memory_page *page GCC_UNUSED, libspectrum_word address, libspect
     if (offset == 0)
     {
         // Command register written - process command via dispatcher
-        xfs_handle_command(&xfs_registers);
+        xfs_handle_command((struct xfs_registers_t*)&xfs_registers);
     }
 }
