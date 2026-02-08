@@ -82,7 +82,7 @@ Options/_Sound..., Item
 Options/_Peripherals, Branch
 Options/Peripherals/_General..., Item
 Options/Peripherals/_Disk..., Item
-Options/_GDBServer..., Item
+Options/Advanced (_gdbserver) Debugger..., Item, , menu_options_gdbserver
 
 Options/_RZX..., Item
 Options/_Movie..., Item

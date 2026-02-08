@@ -45,7 +45,7 @@ slt_traps, boolean, 1,, slt, slttraps
 double_screen, null, 0
 full_screen, boolean, 0
 writable_roms, boolean, 0
-autosave_settings, boolean, 0
+autosave_settings, boolean, 1
 bw_tv, boolean, 0
 recreated_spectrum, boolean, 0
 rs232_handshake, boolean, 0
@@ -83,7 +83,7 @@ fuller, boolean, 0
 melodik, boolean, 0
 speccyboot, boolean, 0
 specdrum, boolean, 0
-spectranet, boolean, 0
+spectranet, boolean, 1
 spectranet_disable, boolean, 0
 ttx2000s, boolean, 0
 usource, boolean, 0
@@ -207,7 +207,7 @@ svga_modes, null, 0
 sdl_fullscreen_mode, string, NULL
 doublescan_mode, numeric, 1, 'D', doublescan-mode
 
-start_scaler_mode, string, "normal", 'g', graphics-filter
+start_scaler_mode, string, "2x", 'g', graphics-filter
 
 speccyboot_tap, string, "tap0",
 

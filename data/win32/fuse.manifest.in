@@ -3,10 +3,10 @@
 <assemblyIdentity
   version="@FUSE_FULL_VERSION@"
   processorArchitecture="*"
-  name="fuse.exe"
+  name="fusex.exe"
   type="win32"
 />
-<description>Fuse (Free Unix Spectrum Emulator)</description>
+<description>FuseX (Free Unix Spectrum Emulator)</description>
 <dependency>
   <dependentAssembly>
     <assemblyIdentity

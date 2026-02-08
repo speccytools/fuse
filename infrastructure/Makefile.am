@@ -19,6 +19,6 @@
 ##
 ## E-mail: philip-fuse@shadowmagic.org.uk
 
-fuse_SOURCES += infrastructure/startup_manager.c
+fusex_SOURCES += infrastructure/startup_manager.c
 
 noinst_HEADERS += infrastructure/startup_manager.h

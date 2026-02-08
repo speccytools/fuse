@@ -2308,7 +2308,7 @@ disk_open( disk_t *d, const char *filename, int preindex, int merge_disks )
 static int
 write_udi( FILE *file, disk_t *d )
 {
-  int i, j, error;
+  int i, j;
   size_t len;
   libspectrum_dword crc;
 

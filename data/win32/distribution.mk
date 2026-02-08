@@ -33,9 +33,9 @@ install-win32: all
 	cp $(top_srcdir)/lib/*.png $(DESTDIR)/lib
 	cp $(top_srcdir)/lib/*.scr $(DESTDIR)/lib
 	test "$(UI)" != "sdl" || cp $(top_builddir)/ui/widget/fuse.font $(DESTDIR)/ui/widget
-#	Copy fuse executable (we should manually copy the required libraries)
-	cp $(top_builddir)/.libs/fuse$(EXEEXT) $(DESTDIR) || \
-	cp $(top_builddir)/fuse$(EXEEXT) $(DESTDIR)
+#	Copy fusex executable (we should manually copy the required libraries)
+	cp $(top_builddir)/.libs/fusex$(EXEEXT) $(DESTDIR) || \
+	cp $(top_builddir)/fusex$(EXEEXT) $(DESTDIR)
 #	Get text files
 	for file in AUTHORS ChangeLog COPYING README; \
 	  do cp "$(top_srcdir)/$$file" "$(DESTDIR)/$$file.txt"; \
@@ -52,10 +52,54 @@ install-win32: all
 	test -z "$(UNIX2DOS)" || find $(DESTDIR) -type f \( -name "*.txt" -or -name "*.html" -or -name "*.copyright" \) -exec $(UNIX2DOS) {} \;
 
 install-win32-strip: install-win32
-	test -z "$(STRIP)" || $(STRIP) $(DESTDIR)/fuse$(EXEEXT)
+	test -z "$(STRIP)" || $(STRIP) $(DESTDIR)/fusex$(EXEEXT)
 
-dist-win32-dir:
+# Build 3rdparty dependencies if dist folder doesn't exist
+3rdparty-dist:
+	@if test ! -d "$(top_srcdir)/3rdparty/dist"; then \
+	  echo "Building 3rdparty dependencies..."; \
+	  cd "$(top_srcdir)/3rdparty" && $(MAKE) || { echo "Error: Failed to build 3rdparty dependencies"; exit 1; }; \
+	else \
+	  echo "3rdparty dependencies already built"; \
+	fi
+
+dist-win32-dir: 3rdparty-dist
 	$(MAKE) DESTDIR="$(top_win32dir)" install-win32-strip
+#	Copy DLLs from 3rdparty/dist/bin (built libraries)
+	@if test -d "$(top_srcdir)/3rdparty/dist/bin"; then \
+	  echo "Copying DLLs from 3rdparty/dist/bin..."; \
+	  for dll in "$(top_srcdir)/3rdparty/dist/bin"/*.dll; do \
+	    if test -f "$$dll"; then \
+	      cp "$$dll" "$(top_win32dir)/"; \
+	      echo "  Copied $$(basename $$dll)"; \
+	    fi; \
+	  done; \
+	fi
+#	Copy required MinGW runtime DLLs
+	@MINGW_BIN=""; \
+	if test -n "$$MSYSTEM"; then \
+	  if test "$$MSYSTEM" = "MINGW64"; then \
+	    MINGW_BIN="/mingw64/bin"; \
+	  elif test "$$MSYSTEM" = "MINGW32"; then \
+	    MINGW_BIN="/mingw32/bin"; \
+	  fi; \
+	fi; \
+	if test -z "$$MINGW_BIN"; then \
+	  if test -d "/mingw64/bin"; then \
+	    MINGW_BIN="/mingw64/bin"; \
+	  elif test -d "/mingw32/bin"; then \
+	    MINGW_BIN="/mingw32/bin"; \
+	  fi; \
+	fi; \
+	if test -n "$$MINGW_BIN"; then \
+	  echo "Copying MinGW runtime DLLs from $$MINGW_BIN..."; \
+	  for dll in libwinpthread-1.dll libgcc_s_dw2-1.dll libstdc++-6.dll; do \
+	    if test -f "$$MINGW_BIN/$$dll"; then \
+	      cp "$$MINGW_BIN/$$dll" "$(top_win32dir)/"; \
+	      echo "  Copied $$dll"; \
+	    fi; \
+	  done; \
+	fi
 
 dist-win32-dir-debug:
 	$(MAKE) DESTDIR="$(top_win32dir)" install-win32
@@ -122,4 +166,4 @@ distclean-win32:
 	rm -f -- $(top_builddir)/$(package_win32)-setup.exe.sha1
 
 .PHONY: install-win32 install-win32-strip dist-win32 dist-win32-dir \
-	dist-win32-zip dist-win32-7z dist-win32-exe distclean-win32
+	dist-win32-zip dist-win32-7z dist-win32-exe distclean-win32 3rdparty-dist

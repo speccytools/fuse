@@ -23,8 +23,8 @@ Checkbox, (C)onfirm actions, confirm_actions, INPUT_KEY_c
 Checkbox, A(u)to-save settings, autosave_settings, INPUT_KEY_u
 
 gdbserver
-GDBServer Options
-Checkbox, (E)nable GDBServer (will disable Debugger), gdbserver_enable, INPUT_KEY_e
+Advanced Debugger (gdbserver)
+Checkbox, (E)nable (replaces regular Debugger), gdbserver_enable, INPUT_KEY_e
 Entry, GDBServer (P)ort, gdbserver_port, INPUT_KEY_p, 1337
 
 media

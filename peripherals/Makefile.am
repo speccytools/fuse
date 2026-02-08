@@ -20,7 +20,7 @@
 ##
 ## E-mail: philip-fuse@shadowmagic.org.uk
 
-fuse_SOURCES += \
+fusex_SOURCES += \
                 peripherals/ay.c \
                 peripherals/covox.c \
                 peripherals/dck.c \
@@ -60,14 +60,24 @@ fuse_SOURCES += \
                 peripherals/ide/zxmmc.c
 
 if BUILD_SPECCYBOOT
-fuse_SOURCES += peripherals/nic/enc28j60.c
+fusex_SOURCES += peripherals/nic/enc28j60.c
 endif
 
 if BUILD_SPECTRANET
-fuse_SOURCES += \
+fusex_SOURCES += \
                 peripherals/flash/am29f010.c \
                 peripherals/nic/w5100.c \
-                peripherals/nic/w5100_socket.c
+                peripherals/nic/w5100_socket.c \
+                peripherals/nic/dns_resolver.c \
+                peripherals/nic/dns_processor.c \
+                peripherals/nic/spectranext_config.c \
+                peripherals/fs/xfs.c \
+                peripherals/fs/xfs_worker.c \
+                peripherals/fs/xfs_fs.c \
+                peripherals/fs/xfs_https.c \
+                peripherals/http/httpc.c \
+                peripherals/http/http_sck.c \
+                peripherals/security/tls.c
 endif
 
 noinst_HEADERS += \
@@ -111,4 +121,12 @@ noinst_HEADERS += \
                   peripherals/flash/am29f010.h \
                   peripherals/nic/enc28j60.h \
                   peripherals/nic/w5100.h \
-                  peripherals/nic/w5100_internals.h
+                  peripherals/nic/w5100_internals.h \
+                  peripherals/nic/dns_resolver.h \
+                  peripherals/nic/spectranext.h \
+                  peripherals/nic/spectranext_config.h \
+                  peripherals/fs/xfs.h \
+                  peripherals/fs/xfs_worker.h \
+                  peripherals/http/httpc.h \
+                  peripherals/http/http_sck.h \
+                  peripherals/security/tls.h

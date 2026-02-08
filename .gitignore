@@ -30,7 +30,7 @@
 .dirstamp
 /fuse
 /fuse.dSYM
-/fuse.exe
+/fusex.exe
 /.gdb_history
 /install-sh
 .libs
@@ -106,3 +106,11 @@ tags
 /z80/z80_ed.c
 /.idea
 /fuse-*-win32/
+/3rdparty/audiofile-patched
+/3rdparty/libxml2-2.9.12
+/3rdparty/dist
+ui/win32/options.c.tmp
+ui/win32/options-header.pl
+fusex-*-win32*
+test-driver
+fuse.exe

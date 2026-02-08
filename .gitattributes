@@ -1,0 +1,31 @@
+# Set default behavior to automatically normalize line endings
+* text=auto
+
+# Force LF line endings for text files
+*.c text eol=lf
+*.h text eol=lf
+*.pl text eol=lf
+*.pm text eol=lf
+*.dat text eol=lf
+*.am text eol=lf
+*.ac text eol=lf
+*.in text eol=lf
+*.sh text eol=lf
+*.txt text eol=lf
+*.md text eol=lf
+Makefile text eol=lf
+Makefile.* text eol=lf
+
+# Binary files
+*.dll binary
+*.exe binary
+*.a binary
+*.lib binary
+*.so binary
+*.dylib binary
+*.bmp binary
+*.ico binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary

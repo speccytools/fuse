@@ -27,7 +27,9 @@
 #include <stdio.h>
 
 // link with Ws2_32.lib
+#ifdef _MSC_VER
 #pragma comment (lib, "Ws2_32.lib")
+#endif
 
 #endif
 
