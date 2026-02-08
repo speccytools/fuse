@@ -63,7 +63,7 @@ SetCompressor lzma
   !insertmacro MUI_PAGE_COMPONENTS
   !insertmacro MUI_PAGE_DIRECTORY
   !insertmacro MUI_PAGE_INSTFILES
-  !define MUI_FINISHPAGE_RUN "$INSTDIR\fuse.exe"
+  !define MUI_FINISHPAGE_RUN "$INSTDIR\fusex.exe"
   !define MUI_FINISHPAGE_NOREBOOTSUPPORT
   !insertmacro MUI_PAGE_FINISH
   
@@ -87,10 +87,10 @@ SetCompressor lzma
   VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" ""
   VIAddVersionKey /LANG=${LANG_ENGLISH} "InternalName" "${SETUP_FILENAME}"
   VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "@FUSE_COPYRIGHT@"
-  VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Fuse"
+  VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "FuseX"
   VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${FUSE_VERSION}"
   VIAddVersionKey /LANG=${LANG_ENGLISH} "OriginalFilename" "${SETUP_FILE}"
-  VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "Fuse - the Free Unix Spectrum Emulator"
+  VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "FuseX - the Free Unix Spectrum Emulator"
   VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${FUSE_VERSION}"
 
 ;--------------------------------
@@ -248,7 +248,7 @@ section "!Fuse Core Files (required)" SecCore
     File "AUTHORS.txt"
     File "ChangeLog.txt"
     File "COPYING.txt"
-    File "fuse.exe"
+    File "fusex.exe"
     File /nonfatal "fuse.html"
     File /nonfatal "LICENSES.txt"
     File /nonfatal "manual*.png"
@@ -287,13 +287,13 @@ sectionEnd
 section "Start Menu and Desktop links" SecShortcuts
 
     DetailPrint "Creating Shortcuts..."
-    CreateDirectory "$SMPROGRAMS\Fuse"
-    CreateShortCut "$SMPROGRAMS\Fuse\Fuse.lnk" "$INSTDIR\fuse.exe"
+    CreateDirectory "$SMPROGRAMS\FuseX"
+    CreateShortCut "$SMPROGRAMS\FuseX\FuseX.lnk" "$INSTDIR\fusex.exe"
     IfFileExists "$INSTDIR\fuse.html" 0 +2
-    CreateShortCut "$SMPROGRAMS\Fuse\Manual.lnk" "$INSTDIR\fuse.html"
-    CreateShortCut "$SMPROGRAMS\Fuse\Readme.lnk" "$INSTDIR\README.txt"
-    CreateShortCut "$SMPROGRAMS\Fuse\Uninstall.lnk" "$INSTDIR\uninstall.exe"
-    CreateShortCut "$DESKTOP\Fuse.lnk" "$INSTDIR\fuse.exe"
+    CreateShortCut "$SMPROGRAMS\FuseX\Manual.lnk" "$INSTDIR\fuse.html"
+    CreateShortCut "$SMPROGRAMS\FuseX\Readme.lnk" "$INSTDIR\README.txt"
+    CreateShortCut "$SMPROGRAMS\FuseX\Uninstall.lnk" "$INSTDIR\uninstall.exe"
+    CreateShortCut "$DESKTOP\FuseX.lnk" "$INSTDIR\fusex.exe"
 
 sectionEnd
 
@@ -312,9 +312,9 @@ SectionGroupEnd
 
 Section "-Register Application"
   WriteRegStr HKLM "Software\Classes\${PROG_ID}\shell" "" "open"
-  WriteRegStr HKLM "Software\Classes\${PROG_ID}\DefaultIcon" "" "$INSTDIR\fuse.exe,0"
-  WriteRegStr HKLM "Software\Classes\${PROG_ID}\shell\open\command" "" '"$INSTDIR\fuse.exe" "%1"'
-  WriteRegStr HKLM "Software\Classes\Applications\fuse.exe" "NoOpenWith" ""
+  WriteRegStr HKLM "Software\Classes\${PROG_ID}\DefaultIcon" "" "$INSTDIR\fusex.exe,0"
+  WriteRegStr HKLM "Software\Classes\${PROG_ID}\shell\open\command" "" '"$INSTDIR\fusex.exe" "%1"'
+  WriteRegStr HKLM "Software\Classes\Applications\fusex.exe" "NoOpenWith" ""
 
   System::Call 'shell32.dll::SHChangeNotify(i, i, i, i) v (0x08000000, 0, 0, 0)'
 SectionEnd
@@ -347,7 +347,7 @@ section "uninstall"
 
     ; Unregister Application
     DeleteRegKey HKLM "Software\Classes\${PROG_ID}"
-    DeleteRegKey HKLM "Software\Classes\Applications\fuse.exe"
+    DeleteRegKey HKLM "Software\Classes\Applications\fusex.exe"
 
     System::Call 'shell32.dll::SHChangeNotify(i, i, i, i) v (0x08000000, 0, 0, 0)'
 	
@@ -369,7 +369,7 @@ section "uninstall"
     Delete "$INSTDIR\AUTHORS.txt"
     Delete "$INSTDIR\ChangeLog.txt"
     Delete "$INSTDIR\COPYING.txt"
-    Delete "$INSTDIR\fuse.exe"
+    Delete "$INSTDIR\fusex.exe"
     Delete "$INSTDIR\fuse.html"
     Delete "$INSTDIR\manual*.png"
     Delete "$INSTDIR\README.txt"

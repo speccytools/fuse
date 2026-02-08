@@ -47,10 +47,14 @@ for tool in gcc make pkg-config perl; do
 done
 
 # Build 3rdparty dependencies if needed
-echo -e "\n${GREEN}Building 3rdparty dependencies...${NC}"
-cd "$SCRIPT_DIR/3rdparty"
-make
-cd "$SCRIPT_DIR"
+if [[ ! -d "$SCRIPT_DIR/3rdparty/dist/bin" ]]; then
+    echo -e "\n${GREEN}Building 3rdparty dependencies...${NC}"
+    cd "$SCRIPT_DIR/3rdparty"
+    make -j$(nproc)
+    cd "$SCRIPT_DIR"
+else
+    echo -e "\n${GREEN}3rdparty dependencies already built (found 3rdparty/dist/bin)${NC}"
+fi
 
 # Set up local dist prefix
 DIST_PREFIX="$SCRIPT_DIR/3rdparty/dist"
@@ -86,7 +90,7 @@ fi
 
 # Build and create distribution
 echo -e "\n${GREEN}Building Fuse and creating Windows distribution...${NC}"
-make dist-win32
+make dist-win32 -j$(nproc)
 
 echo -e "\n${GREEN}=== Build complete! ===${NC}"
 echo ""

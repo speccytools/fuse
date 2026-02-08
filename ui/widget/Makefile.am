@@ -22,7 +22,7 @@
 
 if USE_WIDGET
 
-fuse_SOURCES += $(ui_widget_files)
+fusex_SOURCES += $(ui_widget_files)
 
 BUILT_SOURCES += $(ui_widget_built)
 

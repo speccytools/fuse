@@ -20,7 +20,7 @@
 ##
 ## E-mail: philip-fuse@shadowmagic.org.uk
 
-fuse_SOURCES += \
+fusex_SOURCES += \
                 machines/machines_periph.c \
                 machines/pentagon.c \
                 machines/pentagon512.c \

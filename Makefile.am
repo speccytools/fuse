@@ -21,11 +21,11 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-bin_PROGRAMS = fuse
+bin_PROGRAMS = fusex
 
 noinst_PROGRAMS =
 
-fuse_SOURCES = display.c \
+fusex_SOURCES = display.c \
 	event.c \
 	fuse.c \
 	input.c \
@@ -56,7 +56,7 @@ fuse_SOURCES = display.c \
 	uimedia.c \
 	utils.c
 
-fuse_LDADD = \
+fusex_LDADD = \
              $(PTHREAD_LIBS) \
              $(LIBSPECTRUM_LIBS) \
              $(GTK_LIBS) \
@@ -66,12 +66,12 @@ fuse_LDADD = \
              $(XML_LIBS)
 
 if USE_SDL
-fuse_LDADD += $(SDL_LIBS)
+fusex_LDADD += $(SDL_LIBS)
 endif
 
-fuse_DEPENDENCIES =
+fusex_DEPENDENCIES =
 
-EXTRA_fuse_SOURCES =
+EXTRA_fusex_SOURCES =
 
 BUILT_SOURCES = options.h settings.c settings.h
 
@@ -161,9 +161,9 @@ pkgdata_DATA =
 ## Resources for Windows executables
 if COMPAT_WIN32
 
-fuse_SOURCES += windres.rc
-fuse_LDADD += windres.o
-fuse_DEPENDENCIES += windres.o
+fusex_SOURCES += windres.rc
+fusex_LDADD += windres.o
+fusex_DEPENDENCIES += windres.o
 
 windres.o: windres.rc data/win32/winfuse.ico data/win32/fuse.manifest $(ui_win32_res)
 	$(AM_V_GEN)$(WINDRES) -I$(srcdir) -I. $(srcdir)/windres.rc $(LIBSPECTRUM_CFLAGS) $(CPPFLAGS) windres.o

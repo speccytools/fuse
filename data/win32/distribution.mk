@@ -33,9 +33,9 @@ install-win32: all
 	cp $(top_srcdir)/lib/*.png $(DESTDIR)/lib
 	cp $(top_srcdir)/lib/*.scr $(DESTDIR)/lib
 	test "$(UI)" != "sdl" || cp $(top_builddir)/ui/widget/fuse.font $(DESTDIR)/ui/widget
-#	Copy fuse executable (we should manually copy the required libraries)
-	cp $(top_builddir)/.libs/fuse$(EXEEXT) $(DESTDIR) || \
-	cp $(top_builddir)/fuse$(EXEEXT) $(DESTDIR)
+#	Copy fusex executable (we should manually copy the required libraries)
+	cp $(top_builddir)/.libs/fusex$(EXEEXT) $(DESTDIR) || \
+	cp $(top_builddir)/fusex$(EXEEXT) $(DESTDIR)
 #	Get text files
 	for file in AUTHORS ChangeLog COPYING README; \
 	  do cp "$(top_srcdir)/$$file" "$(DESTDIR)/$$file.txt"; \
@@ -52,7 +52,7 @@ install-win32: all
 	test -z "$(UNIX2DOS)" || find $(DESTDIR) -type f \( -name "*.txt" -or -name "*.html" -or -name "*.copyright" \) -exec $(UNIX2DOS) {} \;
 
 install-win32-strip: install-win32
-	test -z "$(STRIP)" || $(STRIP) $(DESTDIR)/fuse$(EXEEXT)
+	test -z "$(STRIP)" || $(STRIP) $(DESTDIR)/fusex$(EXEEXT)
 
 # Build 3rdparty dependencies if dist folder doesn't exist
 3rdparty-dist:
