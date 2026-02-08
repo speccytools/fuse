@@ -249,14 +249,18 @@ section "!Fuse Core Files (required)" SecCore
     File "ChangeLog.txt"
     File "COPYING.txt"
     File "fuse.exe"
-    File "fuse.html"
+    File /nonfatal "fuse.html"
     File /nonfatal "LICENSES.txt"
     File /nonfatal "manual*.png"
     File "README.txt"
     File /nonfatal "README-win32.txt"
-    File "*.dll"
-    SetOutPath $INSTDIR\3rd-party
-    File /nonfatal "3rd-party\*"
+    ; Copy required DLLs (fatal - must exist)
+    File "libspectrum-9.dll"
+    File "libwinpthread-1.dll"
+    File "libstdc++-6.dll"
+    File /nonfatal "libaudiofile-1.dll"
+    File /nonfatal "libxml2-2.dll"
+    File /nonfatal "libgcc_s_dw2-1.dll"
     SetOutPath $INSTDIR\lib
     File "lib\*"
     SetOutPath "$INSTDIR\roms"
@@ -285,6 +289,7 @@ section "Start Menu and Desktop links" SecShortcuts
     DetailPrint "Creating Shortcuts..."
     CreateDirectory "$SMPROGRAMS\Fuse"
     CreateShortCut "$SMPROGRAMS\Fuse\Fuse.lnk" "$INSTDIR\fuse.exe"
+    IfFileExists "$INSTDIR\fuse.html" 0 +2
     CreateShortCut "$SMPROGRAMS\Fuse\Manual.lnk" "$INSTDIR\fuse.html"
     CreateShortCut "$SMPROGRAMS\Fuse\Readme.lnk" "$INSTDIR\README.txt"
     CreateShortCut "$SMPROGRAMS\Fuse\Uninstall.lnk" "$INSTDIR\uninstall.exe"

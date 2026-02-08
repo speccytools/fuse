@@ -112,3 +112,4 @@ tags
 ui/win32/options.c.tmp
 ui/win32/options-header.pl
 fuse-*-win32*
+test-driver

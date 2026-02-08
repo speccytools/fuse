@@ -54,7 +54,16 @@ install-win32: all
 install-win32-strip: install-win32
 	test -z "$(STRIP)" || $(STRIP) $(DESTDIR)/fuse$(EXEEXT)
 
-dist-win32-dir:
+# Build 3rdparty dependencies if dist folder doesn't exist
+3rdparty-dist:
+	@if test ! -d "$(top_srcdir)/3rdparty/dist"; then \
+	  echo "Building 3rdparty dependencies..."; \
+	  cd "$(top_srcdir)/3rdparty" && $(MAKE) || { echo "Error: Failed to build 3rdparty dependencies"; exit 1; }; \
+	else \
+	  echo "3rdparty dependencies already built"; \
+	fi
+
+dist-win32-dir: 3rdparty-dist
 	$(MAKE) DESTDIR="$(top_win32dir)" install-win32-strip
 #	Copy DLLs from 3rdparty/dist/bin (built libraries)
 	@if test -d "$(top_srcdir)/3rdparty/dist/bin"; then \
@@ -157,4 +166,4 @@ distclean-win32:
 	rm -f -- $(top_builddir)/$(package_win32)-setup.exe.sha1
 
 .PHONY: install-win32 install-win32-strip dist-win32 dist-win32-dir \
-	dist-win32-zip dist-win32-7z dist-win32-exe distclean-win32
+	dist-win32-zip dist-win32-7z dist-win32-exe distclean-win32 3rdparty-dist
