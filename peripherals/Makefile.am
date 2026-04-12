@@ -70,7 +70,16 @@ fusex_SOURCES += \
                 peripherals/nic/w5100_socket.c \
                 peripherals/nic/dns_resolver.c \
                 peripherals/nic/dns_processor.c \
-                peripherals/nic/spectranext_config.c \
+                peripherals/nic/engines/engine_argv.c \
+                peripherals/nic/engines/engine_fs.c \
+                peripherals/nic/engines/json.c \
+                peripherals/nic/engines/jsonpath/ast.c \
+                peripherals/nic/engines/jsonpath/lexer.c \
+                peripherals/nic/engines/jsonpath/matcher.c \
+                peripherals/nic/engines/jsonpath/parser.c \
+                peripherals/nic/engines/parson.c \
+                peripherals/nic/spectranext_controller.c \
+                peripherals/nic/spectranext_stdout.c \
                 peripherals/fs/xfs.c \
                 peripherals/fs/xfs_worker.c \
                 peripherals/fs/xfs_fs.c \
@@ -124,7 +133,15 @@ noinst_HEADERS += \
                   peripherals/nic/w5100_internals.h \
                   peripherals/nic/dns_resolver.h \
                   peripherals/nic/spectranext.h \
-                  peripherals/nic/spectranext_config.h \
+                  peripherals/nic/engines/engine.h \
+                  peripherals/nic/engines/engine_fs.h \
+                  peripherals/nic/engines/jsonpath/ast.h \
+                  peripherals/nic/engines/jsonpath/lexer.h \
+                  peripherals/nic/engines/jsonpath/matcher.h \
+                  peripherals/nic/engines/jsonpath/parser.h \
+                  peripherals/nic/engines/parson.h \
+                  peripherals/nic/spectranext_controller.h \
+                  peripherals/nic/spectranext_stdout.h \
                   peripherals/fs/xfs.h \
                   peripherals/fs/xfs_worker.h \
                   peripherals/http/httpc.h \
