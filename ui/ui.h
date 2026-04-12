@@ -78,6 +78,9 @@ void ui_breakpoints_updated( void );
 /* Reset anything in the UI which needs to be reset on machine selection */
 int ui_widgets_reset( void );
 
+/* Spectranext virtual UART (port 0x043b) — host debug log */
+void ui_spectranext_debug_log_byte( int c );
+
 /* Functions defined in ../ui.c */
 
 /* Confirm whether we want to save some data before overwriting it */
@@ -243,6 +246,7 @@ typedef enum ui_menu_item {
   UI_MENU_ITEM_RECORDING_ROLLBACK,
   UI_MENU_ITEM_AY_LOGGING,
   UI_MENU_ITEM_TAPE_RECORDING,
+  UI_MENU_ITEM_MACHINE_DEBUG_LOG,
 
 } ui_menu_item;
 

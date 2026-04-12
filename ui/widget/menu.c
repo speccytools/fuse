@@ -705,6 +705,11 @@ menu_machine_debugger( int action )
 }
 
 void
+menu_machine_debuglog( int action GCC_UNUSED )
+{
+}
+
+void
 menu_machine_pokememory( int action )
 {
   widget_do_pokemem();

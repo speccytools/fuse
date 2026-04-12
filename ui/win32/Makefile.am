@@ -41,6 +41,8 @@ ui_win32_files = \
                  ui/win32/browse.c \
                  ui/win32/browse.h \
                  ui/win32/confirm.c \
+                 ui/win32/debuglog.c \
+                 ui/win32/debuglog.h \
                  ui/win32/debugger.c \
                  ui/win32/debugger.h \
                  ui/win32/fileselector.c \

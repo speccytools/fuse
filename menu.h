@@ -168,6 +168,7 @@ MENU_CALLBACK_WITH_ACTION( menu_machine_reset );
 MENU_CALLBACK( menu_machine_select );
 MENU_DETAIL( menu_machine_detail );
 MENU_CALLBACK( menu_machine_debugger );
+MENU_CALLBACK( menu_machine_debuglog );
 MENU_CALLBACK( menu_machine_pokefinder );
 MENU_CALLBACK( menu_machine_pokememory );
 MENU_CALLBACK( menu_machine_memorybrowser );

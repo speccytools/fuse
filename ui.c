@@ -39,6 +39,9 @@
 #include "ui/ui.h"
 #include "ui/uimedia.h"
 #include "ui/widget/widget.h"
+#ifdef UI_WIN32
+#include "ui/win32/debuglog.h"
+#endif
 
 #define MESSAGE_MAX_LENGTH 256
 
@@ -239,6 +242,8 @@ static const struct menu_item_entries menu_item_lookup[] = {
     "/Machine/Profiler/Start", 1 },
 
   { UI_MENU_ITEM_MACHINE_DEBUGGER, "/Machine/Debugger..." },
+
+  { UI_MENU_ITEM_MACHINE_DEBUG_LOG, "/Machine/Debug Log..." },
 
   { UI_MENU_ITEM_MACHINE_MULTIFACE, "/Machine/Multiface Red Button" },
 
@@ -812,3 +817,13 @@ ui_widget_keyhandler( int native_key )
 {
 }
 #endif				/* #ifndef USE_WIDGET */
+
+void
+ui_spectranext_debug_log_byte( int c )
+{
+#ifdef UI_WIN32
+  win32_debuglog_append_byte( c );
+#else
+  (void)c;
+#endif
+}

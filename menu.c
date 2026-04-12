@@ -782,7 +782,13 @@ MENU_CALLBACK( menu_file_screenshot_savescreenaspng )
   fuse_emulation_unpause();
 }
 
-#endif
+#else				/* !USE_LIBPNG */
+
+MENU_CALLBACK( menu_file_screenshot_savescreenaspng )
+{
+}
+
+#endif				/* USE_LIBPNG */
 
 #ifdef HAVE_LIB_XML2
 

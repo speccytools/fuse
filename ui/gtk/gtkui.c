@@ -653,6 +653,12 @@ menu_machine_debugger( GtkAction *gtk_action GCC_UNUSED,
   if( paused ) ui_debugger_activate();
 }
 
+void
+menu_machine_debuglog( GtkAction *gtk_action GCC_UNUSED,
+                       gpointer data GCC_UNUSED )
+{
+}
+
 /* Called on machine selection */
 int
 ui_widgets_reset( void )

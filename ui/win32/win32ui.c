@@ -45,6 +45,7 @@
 #include "utils.h"
 #include "win32internals.h"
 #include "win32joystick.h"
+#include "debuglog.h"
 
 /* Window handler */
 HWND fuse_hWnd;
@@ -428,6 +429,8 @@ ui_end( void )
   win32keyboard_end();
 
   error = win32display_end(); if( error ) return error;
+
+  win32_debuglog_end();
 
   /* close the monospaced font handle */     
   if( monospaced_font ) {

@@ -148,6 +148,7 @@ Machine/_Reset..., Item, F5,,, 0
 Machine/_Hard reset..., Item,, menu_machine_reset,, 1
 Machine/_Select..., Item, F9,, menu_machine_detail
 Machine/_Debugger..., Item
+Machine/Debug _Log..., Item
 Machine/P_oke Finder..., Item
 Machine/Po_ke Memory..., Item
 Machine/_Memory Browser..., Item
