@@ -72,7 +72,9 @@ fusex_SOURCES += \
                 peripherals/nic/dns_processor.c \
                 peripherals/nic/engines/engine_argv.c \
                 peripherals/nic/engines/engine_fs.c \
+                peripherals/nic/engines/engine_utf8.c \
                 peripherals/nic/engines/json.c \
+                peripherals/nic/engines/xpath.c \
                 peripherals/nic/engines/jsonpath/ast.c \
                 peripherals/nic/engines/jsonpath/lexer.c \
                 peripherals/nic/engines/jsonpath/matcher.c \
@@ -135,6 +137,7 @@ noinst_HEADERS += \
                   peripherals/nic/spectranext.h \
                   peripherals/nic/engines/engine.h \
                   peripherals/nic/engines/engine_fs.h \
+                  peripherals/nic/engines/engine_utf8.h \
                   peripherals/nic/engines/jsonpath/ast.h \
                   peripherals/nic/engines/jsonpath/lexer.h \
                   peripherals/nic/engines/jsonpath/matcher.h \
